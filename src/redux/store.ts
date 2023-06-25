@@ -1,11 +1,8 @@
-import { combineReducers, legacy_createStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
+import {legacy_createStore,combineReducers, applyMiddleware} from 'redux';
+import thunk from 'redux-thunk'
+import { characterReducer } from './reducers/character-reducer';
 
-const rootReducer = combineReducers({});
 
-export type RootState = ReturnType<typeof rootReducer>;
+const combine = combineReducers({character:characterReducer})
 
-export const store = legacy_createStore(
-    rootReducer, 
-    applyMiddleware(thunk)
-);
+export const store = legacy_createStore(combine, applyMiddleware(thunk))

@@ -1,8 +1,15 @@
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import HomePage from './pages/homePage';
+import BookmarkPage from './pages/bookmarkPage';
+
 function App() {
   return (
-    <>
-      <h1>Começamos </h1>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<HomePage/>} />
+        <Route path="/favoritos" element={<BookmarkPage/>} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
