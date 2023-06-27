@@ -1,14 +1,21 @@
-const State = {
-    todo: []
+interface Cpages {
+  CharacterPages: any[];
 }
 
-export function rickReducer(state = State, action) {
-    switch (action.type) {
-        case "PAGES" :{
-            ...state,
-            todo : action.payload
-        }
-        default:
-            return state;
+const initialStatePages = {
+  CharacterPages: [],
+};
+
+export function pages(state: Cpages = initialStatePages, action: any): Cpages {
+  switch (action.type) {
+    case "GET_PAGES": {
+      return {
+        ...state,
+        CharacterPages: action.payload.page,
+      };
     }
+
+    default:
+      return state;
+  }
 }
