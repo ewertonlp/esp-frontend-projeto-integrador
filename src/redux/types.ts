@@ -1,6 +1,26 @@
-type ActionGetCards = {
-  type: 'GET_CARDS';
-  payload: { data: string[] };
+export type State = {
+  character: {
+    id: number;
+    name: string;
+    image: string;
+    episode: string[];
+  }[];
+  favorites: {
+    id: number;
+    name: string;
+    image: string;
+  }[];
+  loading: boolean;
+}
+
+export type Action = { 
+  type: string; 
+  payload?: any;
 };
 
-export type Action = ActionGetCards;
+
+
+
+
+
+

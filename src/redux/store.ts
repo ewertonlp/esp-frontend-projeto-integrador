@@ -5,4 +5,9 @@ import { characterReducer } from './reducers/character-reducer';
 
 const combine = combineReducers({character:characterReducer})
 
-export const store = legacy_createStore(combine, applyMiddleware(thunk))
+const store = legacy_createStore(combine, applyMiddleware(thunk));
+
+export default store;
+
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
