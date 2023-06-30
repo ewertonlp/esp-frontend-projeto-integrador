@@ -1,17 +1,16 @@
-interface CharacterState {
-  character: any[];
-  pages: number;
-}
+import { State, Action } from "../types";
 
-const initialState: CharacterState = {
+const initialState: State = {
   character: [],
-  pages: 1,
+  favorites: [],
+  loading: true,
+  page: 1,
 };
 
 export function characterReducer(
-  state: CharacterState = initialState,
+  state: State = initialState,
   action: any
-): CharacterState {
+): State {
   switch (action.type) {
     case "GETALL": {
       return {
@@ -23,7 +22,7 @@ export function characterReducer(
     case "NEXT-PAGE": {
       return {
         ...state,
-        pages: state.pages + 1
+        page: state.page + 1,
       };
     }
 
@@ -31,7 +30,7 @@ export function characterReducer(
     case "PREVIOUS_PAGE": {
       return {
         ...state,
-        pages: state.pages - 1
+        page: state.page - 1,
       };
     }
 

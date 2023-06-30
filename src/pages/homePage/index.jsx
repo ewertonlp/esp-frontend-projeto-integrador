@@ -1,14 +1,16 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {useSelector, useDispatch} from 'react-redux'
-import { getCharacters } from '../../redux/actions/action';
+import { getCharacters, getPages } from '../../redux/actions/action';
 import CharacterCard from '../../components/character/character-card/';
 import Header from '../../components/layouts/header';
-
+import ButtonPages from '../button/index'
 const HomePage = () => {
+  let [pageNumber, updatePageNumber] = useState(1);
   const dispatch = useDispatch();
 
   useEffect(()=>{
-    dispatch(getCharacters())
+    dispatch(getCharacters()),
+    dispatch(getPages())
   },[dispatch])
 
   const {character} = useSelector((state)=>state.character);
@@ -21,6 +23,8 @@ const HomePage = () => {
           <CharacterCard key={character.id} img={character.image} name={character.name}/>
         ))}
       </ul>
+
+      <ButtonPages/>
     </div>
   )
 }
