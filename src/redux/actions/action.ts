@@ -10,8 +10,6 @@ export interface CharacterAction {
 export const getCharacters = () => {
   return async (dispatch: Dispatch<CharacterAction>) => {
     const response = await api.get("/character");
-    // console.log(response.data.results.results);
-
     dispatch({ type: "GETALL", payload: response.data });
   };
 };
@@ -20,19 +18,9 @@ export const getPages = (page: number) => {
   return async (dispatch: Dispatch<CharacterAction>) => {
     const response = await api.get(`/character/?page=${page}`);
     console.log(response.data);
-
-    dispatch({ type: "GET_PAGES", payload: response.data });
+    dispatch({ type: "GET_PAGE", payload: response.data });
   };
 };
-
-// export const getPages = () => {
-//   return async (dispatch: Dispatch<CharacterAction>) => {
-//     const response = await api.get("character/?page=19");
-//     console.log(response.data);
-
-//     dispatch({ type: "GET_PAGES", payload: response.data });
-//   };
-// };
 
 export const getCharacterById = (id: number) => {
   return async (dispatch: any) => {

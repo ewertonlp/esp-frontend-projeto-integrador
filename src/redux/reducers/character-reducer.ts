@@ -5,6 +5,7 @@ const initialState: State = {
   favorites: [],
   loading: true,
   page: 1,
+  filter: "",
 };
 
 export function characterReducer(
@@ -18,7 +19,16 @@ export function characterReducer(
         character: action.payload,
       };
     }
+
+    case "GET_PAGE": {
+      return {
+        ...state,
+        character: [...state.character, action.payload],
+      };
+    }
+
     //vai para a proxima pagina
+
     case "NEXT-PAGE": {
       return {
         ...state,

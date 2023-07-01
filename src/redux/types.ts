@@ -1,18 +1,24 @@
-import { faInfo } from "@fortawesome/free-solid-svg-icons";
-
 export type State = {
   character: {
     id: number;
     name: string;
     image: string;
     episode: string[];
+    info?: {
+      count: number;
+      pages: number;
+      next: string | null;
+      prev: string | null;
+    }[];
+    filter: string;
   }[];
+  page: number;
   favorites: {
     id: number;
     name: string;
     image: string;
   }[];
-  page: number;
+  filter: string;
   loading: boolean;
 };
 
