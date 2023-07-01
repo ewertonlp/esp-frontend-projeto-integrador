@@ -1,19 +1,13 @@
-import { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import {
-  getCharacters,
-  getPages,
-  filterCharacter,
-} from '../../redux/actions/action';
-import api from '../../sevices/apiURL.ts';
-import { RootState } from '../../redux/store.ts';
-import { State } from '../../redux/types';
-import { setFilter } from '../../redux/actions/filter-action.ts';
-import CharacterCard from '../../components/character/character-card';
-import Header from '../../components/layouts/header';
-import Search from '../../components/search';
-import Pagination from '../../components/pagination/index.tsx';
-import ButtonPages from '../../components/pagination/index.tsx';
+import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { getPages } from "../../redux/actions/action.ts";
+import CharacterCard from "../../components/character/character-card/index.tsx";
+import Header from "../../components/layouts/header.tsx";
+import ButtonPages from "../button/index";
+import { RootState } from "../../redux/store.ts";
+import { State } from "../../redux/types.ts";
+import { setFilter } from "../../redux/actions/filter-action.ts";
+import api from "../../sevices/apiURL.ts";
 
 interface Character {
   id: number;
@@ -26,7 +20,7 @@ interface Character {
     next: string | null;
     prev: string | null;
   }[];
-  pageNumber: number;
+  // page: number;
   search: string;
 }
 
@@ -81,10 +75,11 @@ const HomePage = () => {
     return !!favorites.find((favorite) => favorite.id === idCharacter);
   }
 
+  
+
   return (
     <div className="w-full bg-slate-900">
       <Header />
-
       <div className="w-11/12 mx-auto">
         <div className="my-16 flex justify-end items-center">
           <input
@@ -95,6 +90,7 @@ const HomePage = () => {
             placeholder="Morty..."
           />
        
+
           <button
             type="submit"
             onClick={handleClearFilter}
@@ -103,28 +99,32 @@ const HomePage = () => {
             Limpar
           </button>
         </div>
-        {/* <Search
-          filter={filter}
-          handleFilterChange={handleFilterChange}
-          handleClearFilter={handleClearFilter}
-        /> */}
-
-        <ButtonPages />
-        
-
-        {cardsLoading()}
-        <div className="sm:flex-col  mx-auto md:grid md:grid-cols-3 lg:grid lg:grid-cols-5 gap-8 lg:mx-auto my-12">
-          {characterFilter?.map((character) => (
-            <CharacterCard
-              key={character.id}
-              id={character.id}
-              img={character.image}
-              name={character.name}
-              isFavorite={isFavorite(character.id)}
-            />
-          ))}
-        </div>
-       
+      </div>
+      <div className="sm:flex-col  mx-auto md:grid md:grid-cols-3 lg:grid lg:grid-cols-5 gap-8 lg:mx-auto my-12">
+        {characterFilter?.map((character) => (
+          <CharacterCard
+            key={character.id}
+            id={character.id}
+            img={character.image}
+            name={character.name}
+            isFavorite={isFavorite(character.id)}
+          />
+        ))}
+      </div>
+      {/* <ButtonPages /> */}
+      <div className="paginacao">
+        <button
+          className="ml-8 px-4 bg-green500 py-2 rounded-xl text-white font-medium hover:scale-110 duration-200 ease-out"
+          onClick={() => dispatch({ type: "PREVIOUS_PAGE", payload: { page } })}
+        >
+          Anterior
+        </button>
+        <button
+          onClick={() => dispatch({ type: "NEXT-PAGE", payload: { page } })}
+          className="ml-8 px-4 bg-green500 py-2 rounded-xl text-white font-medium hover:scale-110 duration-200 ease-out"
+        >
+          Próximo
+        </button>
       </div>
     </div>
   );

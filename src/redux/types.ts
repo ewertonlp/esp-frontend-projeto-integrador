@@ -5,14 +5,14 @@ export type State = {
     image: string;
     episode: string[];
     info?: {
-      count: number,
-      pages: number,
-      next: string | null,
-      prev: string | null,
+      count: number;
+      pages: number;
+      next: string | null;
+      prev: string | null;
     }[];
-    pageNumber: number;
     filter: string;
   }[];
+  page: number;
   favorites: {
     id: number;
     name: string;

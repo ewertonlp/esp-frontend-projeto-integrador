@@ -1,4 +1,8 @@
-import { SET_FILTER, CLEAR_FILTER, FilterActionTypes } from "../actions/filter-action";
+import {
+  SET_FILTER,
+  CLEAR_FILTER,
+  FilterActionTypes,
+} from "../actions/filter-action";
 
 export interface FilterState {
   filter: string;
