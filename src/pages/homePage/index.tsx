@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getPages } from "../../redux/actions/action.ts";
+import { getPages, getCharacters } from "../../redux/actions/action.ts";
 import CharacterCard from "../../components/character/character-card/index.tsx";
 import Header from "../../components/layouts/header.tsx";
 import ButtonPages from "../button/index";
