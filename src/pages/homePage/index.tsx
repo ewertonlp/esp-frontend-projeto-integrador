@@ -1,25 +1,69 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getCharacters } from '../../redux/actions/action';
+import {
+  getCharacters,
+  getPages,
+  filterCharacter,
+} from '../../redux/actions/action';
+import api from '../../sevices/apiURL.ts';
 import { RootState } from '../../redux/store.ts';
 import { State } from '../../redux/types';
+import { setFilter } from '../../redux/actions/filter-action.ts';
 import CharacterCard from '../../components/character/character-card';
 import Header from '../../components/layouts/header';
-import Filter from '../../components/filter/index.tsx';
+import Search from '../../components/search';
+import Pagination from '../../components/pagination/index.tsx';
+import ButtonPages from '../../components/pagination/index.tsx';
+
+interface Character {
+  id: number;
+  name: string;
+  image: string;
+  episode: string[];
+  info?: {
+    count: number;
+    pages: number;
+    next: string | null;
+    prev: string | null;
+  }[];
+  pageNumber: number;
+  search: string;
+}
 
 const HomePage = () => {
+  // const [pageNumber, updatePageNumber] = useState(1);
+  const [characterFilter, setCharacterFilter] = useState<Character[]>([]);
   const dispatch = useDispatch();
-
-  const { character, favorites, loading } = useSelector<RootState, State>(
+  const { character, favorites, info, loading } = useSelector<RootState, State>(
     (store) => store.character
   );
+  const { filter } = useSelector<RootState, State>((store) => store.filter);
 
   useEffect(() => {
     dispatch(getCharacters());
+    dispatch(getPages());
   }, [dispatch]);
 
   useEffect(() => {
-    
+    const fetchData = async () => {
+      const result = await api.get(
+        `/character/?name=${filter}`
+      );
+      setCharacterFilter(result.data.results);
+    };
+    fetchData();
+  }, [filter]);
+
+  const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    dispatch(setFilter(value));
+  };
+
+  const handleClearFilter = () => {
+    dispatch(setFilter(''));
+  };
+
+  useEffect(() => {
     dispatch({ type: 'GET_FAVORITE' });
   }, [dispatch]);
 
@@ -34,8 +78,7 @@ const HomePage = () => {
   }
 
   function isFavorite(idCharacter: number) {
-    return favorites.find((favorite) => favorite.id === idCharacter);
-
+    return !!favorites.find((favorite) => favorite.id === idCharacter);
   }
 
   return (
@@ -43,19 +86,45 @@ const HomePage = () => {
       <Header />
 
       <div className="w-11/12 mx-auto">
-        <Filter />
+        <div className="my-16 flex justify-end items-center">
+          <input
+            type="text"
+            value={filter}
+            onChange={handleFilterChange}
+            className="w-80 py-2 px-4 border border-green500 bg-background text-white rounded-full placeholder:text-gray-300 outline-none"
+            placeholder="Morty..."
+          />
+       
+          <button
+            type="submit"
+            onClick={handleClearFilter}
+            className="ml-6 px-4 bg-green500 py-2 rounded-full text-white font-medium hover:scale-110 duration-200 ease-out"
+          >
+            Limpar
+          </button>
+        </div>
+        {/* <Search
+          filter={filter}
+          handleFilterChange={handleFilterChange}
+          handleClearFilter={handleClearFilter}
+        /> */}
+
+        <ButtonPages />
+        
+
         {cardsLoading()}
         <div className="sm:flex-col  mx-auto md:grid md:grid-cols-3 lg:grid lg:grid-cols-5 gap-8 lg:mx-auto my-12">
-          {character.results?.map((character) => (
+          {characterFilter?.map((character) => (
             <CharacterCard
               key={character.id}
               id={character.id}
               img={character.image}
               name={character.name}
-              isFavorite={isFavorite}
+              isFavorite={isFavorite(character.id)}
             />
           ))}
         </div>
+       
       </div>
     </div>
   );
